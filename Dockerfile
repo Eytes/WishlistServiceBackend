@@ -20,11 +20,11 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app/src
 COPY --from=dependencies /app/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r ./requirements.txt
-RUN addgroup -S appgroup && \
-    adduser -SHD appuser -G appgroup && \
-    chown appuser:appgroup -R /app
-USER appuser
-COPY --chown=appuser:appgroup ./src ./
+RUN addgroup -S wishlist && \
+    adduser -SHD wishlist_user -G wishlist && \
+    chown wishlist_user:wishlist -R /app \
+COPY --chown=wishlist_user:wishlist ./src ./
+USER wishlist_user
 
 
 EXPOSE 8080
