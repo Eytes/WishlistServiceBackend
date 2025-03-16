@@ -1,21 +1,22 @@
 import os
 
 from pydantic import BaseModel, PositiveInt
+from pydantic_settings import BaseSettings
 
 
-class MongoDBSettings(BaseModel):
-    __MONGO_USER: str = os.getenv("MONGO_USER")
-    __MONGO_PASSWORD: str = os.getenv("MONGO_PASSWORD")
-    __MONGO_HOST: str = os.getenv("MONGO_HOST", "127.0.0.1")
-    __MONGO_PORT: PositiveInt = int(os.getenv("MONGO_PORT", 27017))
+class MongoDBSettings(BaseSettings):
+    MONGO_USER: str
+    MONGO_PASSWORD: str
+    MONGO_HOST: str
+    MONGO_PORT: PositiveInt = 27017
+    DATABASE_NAME: str = "Wishlists"
 
-    database_name: str = os.getenv("MONGO_DB_NAME", "user")
     url: str = (
-        f"mongodb://{__MONGO_USER}:{__MONGO_PASSWORD}@{__MONGO_HOST}:{__MONGO_PORT}/"
+        f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/"
     )
 
 
-class Setting(BaseModel):
+class Setting(BaseSettings):
     api_v1_prefix: str = "/api/v1"
     mongodb: MongoDBSettings = MongoDBSettings()
 
